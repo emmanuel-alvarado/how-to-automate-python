@@ -2,6 +2,8 @@ import os
 import json
 import re
 
+root = 'node'
+
 def scanDir(subdir_path):
     vars()['subdir_{}'.format(subdir_path.replace('\\','_'))] = listDir(subdir_path)
     vars()['files_{}'.format(subdir_path.replace('\\','_'))] = listFiles(subdir_path)
@@ -49,8 +51,7 @@ def listFiles(root_path):
             continue
     return list_files
 
-def generateLinks():
-    root = 'node'
+def generateLinks(root):
     global list_all_links
     list_all_links = list()
 
@@ -62,7 +63,16 @@ def generateLinks():
     for dir in list_root_dir:
         scanDir(os.path.join(root, dir))
 
-    print(json.dumps(list_all_links, indent=4))
+    f = open(f'{root}.json', 'w')
+    f.write(json.dumps(list_all_links, indent=4))
 
-
-    
+def updateLinks(root):
+    f = open(f'{root}.json')
+    load_file = json.load(f)
+    for file in load_file:
+        f = open(file['file_path'], encoding='utf8').read()
+        for link in file['links'].keys():
+            f = f.replace(link, f'{link}/v2')
+        f_u = open(file['file_path'], 'w', encoding='utf8')
+        f_u.write(f)
+    print('All files updated')
