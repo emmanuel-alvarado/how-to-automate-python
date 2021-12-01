@@ -1,4 +1,4 @@
-# how-to-automate-python
+# How to Automate tasks with Python
 How to automate tasks with Python
 
 As per our logic we need to create the list of links that contains some characteristics and for that we need to go through all directories and all the files in that and make the list of all links.​
